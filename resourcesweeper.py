@@ -76,6 +76,8 @@ def main(arguments):
         print 'Error: wrong number of arguments.'
     else:
         project_root_path = arguments[1]
+        if not project_root_path.endswith('/'):
+            project_root_path += '/'
         resource_sweeper(project_root_path=project_root_path)
 
 
