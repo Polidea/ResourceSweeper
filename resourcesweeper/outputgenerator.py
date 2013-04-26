@@ -3,7 +3,8 @@ import os
 
 
 def generate_report(output_filename, project_root_path, resources, used_resources):
-    os.remove(output_filename)
+    if os.path.isfile(output_filename):
+        os.remove(output_filename)
     report_file = open(output_filename, 'w')
 
     print(decorated_line('REPORT FOR ROOT PATH %s' % project_root_path), file=report_file)
@@ -57,6 +58,8 @@ def resource_and_resource_file_number(resources):
 
 
 def generate_delete_script(output_filename, project_root_path, unused_resources):
+    if os.path.isfile(output_filename):
+        os.remove(output_filename)
     os.remove(output_filename)
 
     delete_script_file = open(output_filename, 'w')
