@@ -60,7 +60,6 @@ def resource_and_resource_file_number(resources):
 def generate_delete_script(output_filename, project_root_path, unused_resources):
     if os.path.isfile(output_filename):
         os.remove(output_filename)
-    os.remove(output_filename)
 
     delete_script_file = open(output_filename, 'w')
 
