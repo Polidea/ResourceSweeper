@@ -90,21 +90,3 @@ def get_used_resources(resource_occurrences):
     for resource_occurrence in resource_occurrences:
         used_resources.add(resource_occurrence['resource'])
     return used_resources
-
-
-def inform_user(string):
-    length = len(string)
-    header = ''
-    for i in range(length):
-        header += '='
-        # print header
-        # print string
-        # print header
-
-
-def decorated_line(string):
-    length = len(string)
-    header = ''
-    for i in range(length):
-        header += '='
-    return '%s\n%s\n%s' % (header, string, header)
