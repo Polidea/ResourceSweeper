@@ -14,15 +14,19 @@ def main(arguments):
         resources, used_resources = analyze_project_resources(project_root_path=project_root_path)
         unused_resources = resources - used_resources
 
+        print('\nBrief report:')
         print('All resources: %d, files: %d' % (resource_and_resource_file_number(resources)))
         print('Used resources: %d, files: %d' % (resource_and_resource_file_number(used_resources)))
         print('Unused resources: %d, files: %d' % (resource_and_resource_file_number(unused_resources)))
 
-        generate_report(output_filename='report.txt', project_root_path=project_root_path,
-                        resources=resources, used_resources=used_resources)
+        generate_report(output_filename='report.txt',
+                        project_root_path=project_root_path,
+                        resources=resources,
+                        used_resources=used_resources)
 
-        generate_delete_script(output_filename='delete_unused_files_python_script.py',
-                               project_root_path=project_root_path, unused_resources=unused_resources)
+        generate_delete_script(output_filename='delete_unused_files.py',
+                               project_root_path=project_root_path,
+                               unused_resources=unused_resources)
 
 
 if __name__ == "__main__":
