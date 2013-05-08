@@ -18,12 +18,12 @@ def get_subdirectory_paths(directory_path):
     subdirectories = [name for name in os.listdir(directory_path) if
                       os.path.isdir(os.path.join(directory_path, name)) and not '.' in name]
 
-    paths = []
+    paths = {directory_path}
 
     for subdirectory in subdirectories:
         subdirectory_path = '%s%s/' % (directory_path, subdirectory)
-        paths.append(subdirectory_path)
-        paths += get_subdirectory_paths(subdirectory_path)
+        paths.add(subdirectory_path)
+        paths = paths.union(get_subdirectory_paths(subdirectory_path))
 
     return paths
 
