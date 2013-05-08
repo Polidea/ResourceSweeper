@@ -101,7 +101,7 @@ def generate_delete_script(output_filename, project_root_path, unused_resources)
     print('--> Saved delete script: %s' % output_filename)
     print('    Comment files you want to leave and run "python %s"\n' % output_filename)
 
-    print('--> To optimize pngs use script:')
+    print('--> To prepare pngs optimization script use (this will not change any of your files):')
     print('    "python %s %s"\n' % ('optimize_pngs.py', project_root_path))
 
 
