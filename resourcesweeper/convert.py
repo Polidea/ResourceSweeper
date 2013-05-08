@@ -106,6 +106,8 @@ def convert_images_to_jpg(project_root_path, jpg_quality, image_paths):
                 for image_name in file_names:
                     fixed_line = fixed_line.replace('@"%s"' % image_name, '@"%s.jpg"' % image_name)
                     fixed_line = fixed_line.replace('@"%s.png"' % image_name, '@"%s.jpg"' % image_name)
+                    fixed_line = fixed_line.replace('>%s' % image_name, '>%s.jpg' % image_name)
+                    fixed_line = fixed_line.replace('>%s.png' % image_name, '>%s.jpg' % image_name)
                 source_file.write(fixed_line)
 
     old_size = old_size / 1024.0 / 1024.0

@@ -1,4 +1,4 @@
-SOURCE_FILE_EXTENSIONS = ['.m']
+SOURCE_FILE_EXTENSIONS = ['.m', '.plist', '.xib']
 
 
 class Source():

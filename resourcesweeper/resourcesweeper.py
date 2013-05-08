@@ -71,7 +71,7 @@ def get_resource_occurrences(sources, resources):
         source_file_lines = source_file.readlines()
         for line_number, source_file_line in enumerate(source_file_lines):
             for resource in resources:
-                count = source_file_line.count('@"%s' % resource.name)
+                count = source_file_line.count('@"%s' % resource.name) + source_file_line.count('>%s' % resource.name)
                 if count > 0:
                     resource_occurrences.append(
                         {
