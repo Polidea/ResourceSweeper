@@ -1,6 +1,5 @@
 from __future__ import print_function
 import os
-from convert import get_pngs_to_convert
 
 
 def generate_report(output_filename, project_root_path, resources, used_resources):
@@ -46,11 +45,6 @@ def generate_report(output_filename, project_root_path, resources, used_resource
                                 resource.retina_resolution_key,
                                 resource.extension),
                   file=report_file)
-
-    files_with_unused_alpha = get_pngs_to_convert(used_resources)
-    print('\nFiles that do not use alpha channel:', file=report_file)
-    for file_to_convert in files_with_unused_alpha:
-        print(file_to_convert.replace(project_root_path, ''), file=report_file)
 
     print('\n--> Saved report file: %s\n' % output_filename)
 
