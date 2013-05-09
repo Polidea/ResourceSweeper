@@ -1,5 +1,6 @@
 import sys
-from resourcesweeper.outputgenerator import generate_report, resource_and_resource_file_number, generate_delete_script
+from resourcesweeper.outputgenerator import generate_report, resource_and_resource_file_number_and_total_size
+from resourcesweeper.outputgenerator import generate_delete_script
 from resourcesweeper.resourcesweeper import analyze_project_resources
 
 
@@ -15,9 +16,12 @@ def main(arguments):
         unused_resources = resources - used_resources
 
         print('\nBrief report:')
-        print('All resources: %d, files: %d' % (resource_and_resource_file_number(resources)))
-        print('Used resources: %d, files: %d' % (resource_and_resource_file_number(used_resources)))
-        print('Unused resources: %d, files: %d' % (resource_and_resource_file_number(unused_resources)))
+        print('All resources: %d, files: %d, total size: %.2f MiB' % (
+            resource_and_resource_file_number_and_total_size(resources)))
+        print('Used resources: %d, files: %d, total size: %.2f MiB' % (
+            resource_and_resource_file_number_and_total_size(used_resources)))
+        print('Unused resources: %d, files: %d, total size: %.2f MiB' % (
+            resource_and_resource_file_number_and_total_size(unused_resources)))
 
         generate_report(output_filename='report.txt',
                         project_root_path=project_root_path,

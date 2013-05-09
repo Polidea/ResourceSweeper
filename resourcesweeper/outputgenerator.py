@@ -69,6 +69,11 @@ def resource_and_resource_file_number(resources):
     return len(resources), no_resource_files
 
 
+def resource_and_resource_file_number_and_total_size(resources):
+    number_of_resources, number_of_resource_files = resource_and_resource_file_number(resources)
+    return number_of_resources, number_of_resource_files, get_size(resources) / 1024.0 / 1024.0
+
+
 def get_size(resources):
     size = 0
     for resource in resources:
