@@ -27,13 +27,17 @@ def delete_lines_containing_files_in_file(file_names, pbxproj_file_path):
     lines = pbxproj_file.readlines()
     pbxproj_file.close()
 
+    file_names_with_prefix = set()
+    for file_name in file_names:
+        file_names_with_prefix.add('/* ' + file_name + ' */')
+
     os.remove(pbxproj_file_path)
 
     line_count_before = len(lines)
 
     lines_to_remove = set()
     for line in lines:
-        for file_name in file_names:
+        for file_name in file_names_with_prefix:
             if file_name in line:
                 lines_to_remove.add(line)
 
