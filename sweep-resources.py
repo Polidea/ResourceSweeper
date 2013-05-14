@@ -1,6 +1,6 @@
 import sys
 from resourcesweeper.outputgenerator import generate_report, resource_and_resource_file_number_and_total_size
-from resourcesweeper.outputgenerator import generate_delete_script
+from resourcesweeper.outputgenerator import generate_delete_script_for_resources
 from resourcesweeper.resourcesweeper import analyze_project_resources
 
 
@@ -28,9 +28,9 @@ def main(arguments):
                         resources=resources,
                         used_resources=used_resources)
 
-        generate_delete_script(output_filename='delete_unused_files.py',
-                               project_root_path=project_root_path,
-                               unused_resources=unused_resources)
+        generate_delete_script_for_resources(output_filename='delete_unused_files.py',
+                                             project_root_path=project_root_path,
+                                             unused_resources=unused_resources)
 
 
 if __name__ == "__main__":

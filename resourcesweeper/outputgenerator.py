@@ -84,7 +84,7 @@ def get_size(resources):
     return size
 
 
-def generate_delete_script(output_filename, project_root_path, unused_resources):
+def generate_delete_script_for_resources(output_filename, project_root_path, unused_resources):
     if os.path.isfile(output_filename):
         os.remove(output_filename)
 
@@ -108,5 +108,27 @@ def generate_delete_script(output_filename, project_root_path, unused_resources)
 
     print('--> To prepare pngs optimization script use (this will not change any of your files):')
     print('    "python %s %s"\n' % ('optimize_pngs.py', project_root_path))
+
+
+def generate_delete_script_for_classes(output_filename, project_root_path, not_referenced_classes):
+    if os.path.isfile(output_filename):
+        os.remove(output_filename)
+
+    delete_script_file = open(output_filename, 'w')
+    print('from resourcesweeper.delete import delete_files_from_disk_and_pbxproj\n', file=delete_script_file)
+    print('project_root_path = \'%s\'' % project_root_path, file=delete_script_file)
+    print('files_to_delete = (', file=delete_script_file)
+
+    for a_class in not_referenced_classes:
+        for file_name in a_class.get_file_names():
+            file_string = '    \'%s%s\',' % (a_class.directory, file_name)
+            print(file_string, file=delete_script_file)
+    print(')', file=delete_script_file)
+
+    print('delete_files_from_disk_and_pbxproj(files_to_delete, project_root_path)', file=delete_script_file)
+    delete_script_file.close()
+
+    print('--> Saved delete script: %s' % output_filename)
+    print('    Comment files you want to leave and run "python %s"\n' % output_filename)
 
 

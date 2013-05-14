@@ -1,6 +1,8 @@
 from __future__ import print_function
 import os
 
+SPECIAL_CASE_FILE_NAME = {'main.m'}
+
 
 def delete_files_from_disk_and_pbxproj(file_paths, project_root_path):
     xcodeprojs = [name for name in os.listdir(project_root_path) if name.endswith('.xcodeproj')]
@@ -29,7 +31,8 @@ def delete_lines_containing_files_in_file(file_names, pbxproj_file_path):
 
     file_names_with_prefix = set()
     for file_name in file_names:
-        file_names_with_prefix.add('/* ' + file_name + ' */')
+        if not file_name in SPECIAL_CASE_FILE_NAME:
+            file_names_with_prefix.add('/* ' + file_name + ' */')
 
     os.remove(pbxproj_file_path)
 
