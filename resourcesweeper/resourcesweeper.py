@@ -12,7 +12,7 @@ def analyze_project_resources(project_root_path):
     resources = get_resources(subdirectory_paths)
     resource_occurrences = get_resource_occurrences(sources, resources)
     used_resources = get_used_resources(resource_occurrences)
-    used_resources += resources_not_referenced_in_code(resources)
+    used_resources.update(resources_not_referenced_in_code(resources))
 
     return resources, used_resources
 
@@ -98,10 +98,7 @@ def get_used_resources(resource_occurrences):
 def resources_not_referenced_in_code(resources):
     special_resources_to_add = set()
     for resource_name_not_referenced_in_code in RESOURCE_NAMES_NOT_REFERENCED_IN_CODE:
-        print('resource name not referenced in code: \'%s\'' % resource_name_not_referenced_in_code)
         for resource in resources:
-            print('resource named %s' % resource.name)
             if resource.name.__eq__(resource_name_not_referenced_in_code):
                 special_resources_to_add.add(resource)
-                print('ADDED!')
     return special_resources_to_add
