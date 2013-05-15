@@ -3,6 +3,8 @@ import os
 from resource import Resource, get_resource_name
 from source import SOURCE_FILE_EXTENSIONS, Source
 
+RESOURCE_NAMES_NOT_REFERENCED_IN_CODE = {'Default'}
+
 
 def analyze_project_resources(project_root_path):
     subdirectory_paths = get_subdirectory_paths(project_root_path)
@@ -10,6 +12,7 @@ def analyze_project_resources(project_root_path):
     resources = get_resources(subdirectory_paths)
     resource_occurrences = get_resource_occurrences(sources, resources)
     used_resources = get_used_resources(resource_occurrences)
+    used_resources += resources_not_referenced_in_code(resources)
 
     return resources, used_resources
 
@@ -90,3 +93,11 @@ def get_used_resources(resource_occurrences):
     for resource_occurrence in resource_occurrences:
         used_resources.add(resource_occurrence['resource'])
     return used_resources
+
+
+def resources_not_referenced_in_code(resources):
+    special_resources_to_add = set()
+    for resource in resources:
+        if resource.name in RESOURCE_NAMES_NOT_REFERENCED_IN_CODE:
+            special_resources_to_add.add(resource)
+    return special_resources_to_add
