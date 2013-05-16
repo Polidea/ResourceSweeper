@@ -14,7 +14,7 @@ class IosClass():
 
     def generate_use_cases(self):
         name = self.name.lower()
-        return ['#import "' + name + '.h"',
+        return ('#import "' + name + '.h"',
                 '@class ' + name + ';',
                 '@protocol ' + name + ';',
                 ' : ' + name + ' ',
@@ -23,7 +23,7 @@ class IosClass():
                 '(' + name + ' *',
                 '    ' + name + '*',
                 '    ' + name + ' *',
-                '@"' + name + '"']
+                '@"' + name + '"')
 
     def exists_m_file(self):
         return os.path.isfile('%s%s%s' % (self.directory, self.name, '.m'))

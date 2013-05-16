@@ -1,3 +1,4 @@
+import time
 from iosclass import CLASS_EXTENSIONS, IosClass
 from resourcesweeper import get_subdirectory_paths, get_file_names
 
@@ -5,7 +6,7 @@ from resourcesweeper import get_subdirectory_paths, get_file_names
 def analyze_project_resources(project_root_path, main_m_file_path):
     subdirectory_paths = get_subdirectory_paths(project_root_path)
     project_classes = get_classes(subdirectory_paths)
-    set_dependencies(project_classes)
+    set_dependencies(tuple(project_classes))
     not_referenced_classes = get_non_referenced_classes(project_classes, main_m_file_path)
 
     print '\nnot referenced classes:'
