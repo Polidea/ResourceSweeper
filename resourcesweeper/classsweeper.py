@@ -1,4 +1,3 @@
-import time
 from iosclass import CLASS_EXTENSIONS, IosClass
 from resourcesweeper import get_subdirectory_paths, get_file_names
 
