@@ -8,10 +8,6 @@ def analyze_project_resources(project_root_path, main_m_file_path):
     set_dependencies(tuple(project_classes))
     not_referenced_classes = get_non_referenced_classes(project_classes, main_m_file_path)
 
-    print '\nnot referenced classes:'
-    for a_class in not_referenced_classes:
-        print a_class
-
     return project_classes, not_referenced_classes
 
 
@@ -53,12 +49,12 @@ def line_contains_any_of_class_use_cases(class_file_line, class_use_cases):
 def get_non_referenced_classes(project_classes, main_m_file_path):
     not_referenced_classes = project_classes.copy()
     for main_class in not_referenced_classes:
-        if main_class.directory.__eq__(main_m_file_path) and 'main'.__eq__(main_class.name):
+        if main_class.directory == main_m_file_path and main_class.name == 'main':
             remove_used_classes(main_class, not_referenced_classes)
             break
 
     sorted_not_referenced_classes = list(not_referenced_classes)
-    sorted_not_referenced_classes.sort(key=lambda k: k.__str__())
+    sorted_not_referenced_classes.sort(key=lambda k: str(k))
 
     return sorted_not_referenced_classes
 
