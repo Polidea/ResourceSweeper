@@ -12,13 +12,8 @@ def analyze_project_resources(project_root_path, main_m_file_path):
 
 
 def get_classes(subdirectory_paths):
-    classes = set()
-    for path in subdirectory_paths:
-        source_names = get_file_names(path, CLASS_EXTENSIONS)
-        for source_name in source_names:
-            classes.add(IosClass(path, source_name))
-
-    return classes
+    return set([IosClass(path, source_name) for path in subdirectory_paths
+                for source_name in get_file_names(path, CLASS_EXTENSIONS)])
 
 
 def set_dependencies(project_classes):
@@ -37,13 +32,12 @@ def set_dependencies(project_classes):
 
 
 def line_contains_any_of_class_use_cases(class_file_line, class_use_cases):
-    contains = False
     line = class_file_line.lower()
     for class_use_case in class_use_cases:
-        contains = class_use_case in line
-        if contains:
-            break
-    return contains
+        if class_use_case in line:
+            return True
+
+    return False
 
 
 def get_non_referenced_classes(project_classes, main_m_file_path):

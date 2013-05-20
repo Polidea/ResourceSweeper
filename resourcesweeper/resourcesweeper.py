@@ -32,23 +32,16 @@ def get_subdirectory_paths(directory_path):
 
 
 def get_sources(subdirectory_paths):
-    sources = []
-    for path in subdirectory_paths:
-        source_names = get_file_names(path, SOURCE_FILE_EXTENSIONS)
-        for source_name in source_names:
-            sources.append(Source(path, source_name))
-
-    return sources
+    return [Source(path, source_name)
+            for path in subdirectory_paths
+            for source_name in get_file_names(path, SOURCE_FILE_EXTENSIONS)]
 
 
 def get_file_names(path, proper_extensions):
     file_names = [name for name in os.listdir(path) if os.path.isfile(os.path.join(path, name))]
-    file_names_to_return = []
-    for file_name in file_names:
-        for extension in proper_extensions:
-            if file_name.endswith(extension):
-                file_names_to_return.append(file_name)
-    return file_names_to_return
+    return [file_name for file_name in file_names
+            for extension in proper_extensions
+            if file_name.endswith(extension)]
 
 
 def get_resources(subdirectory_paths):
@@ -89,16 +82,10 @@ def get_resource_occurrences(sources, resources):
 
 
 def get_used_resources(resource_occurrences):
-    used_resources = set()
-    for resource_occurrence in resource_occurrences:
-        used_resources.add(resource_occurrence['resource'])
-    return used_resources
+    return set([resource_occurrence['resource'] for resource_occurrence in resource_occurrences])
 
 
 def resources_not_referenced_in_code(resources):
-    special_resources_to_add = set()
-    for resource_name_not_referenced_in_code in RESOURCE_NAMES_NOT_REFERENCED_IN_CODE:
-        for resource in resources:
-            if resource.name.__eq__(resource_name_not_referenced_in_code):
-                special_resources_to_add.add(resource)
-    return special_resources_to_add
+    return set([resource for resource in resources
+                for resource_name_not_referenced_in_code in RESOURCE_NAMES_NOT_REFERENCED_IN_CODE
+                if resource.name == resource_name_not_referenced_in_code])
