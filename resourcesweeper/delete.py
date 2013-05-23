@@ -28,7 +28,7 @@ def get_file_names(file_paths):
 def delete_lines_containing_files_in_file(file_names, pbxproj_file_path):
     original_lines = get_lines_from_file_at_path(pbxproj_file_path)
 
-    if original_lines and remove_file_at_path(pbxproj_file_path):
+    if original_lines:
         file_names_with_prefix_postfix = set(
             ['/* ' + file_name + ' */' for file_name in file_names if not file_name in SPECIAL_CASE_FILE_NAME])
 
@@ -49,31 +49,20 @@ def delete_lines_containing_files_in_file(file_names, pbxproj_file_path):
 def get_lines_from_file_at_path(file_path):
     lines = []
     try:
-        a_file = open(file_path, 'r')
-        lines = a_file.readlines()
-        a_file.close()
+        with open(file_path, 'r') as a_file:
+            lines = a_file.readlines()
     except IOError:
-        print('Error: Could not open to read: %s' % file_path)
+        print('Error: Could not open file to read: %s' % file_path)
     return lines
-
-
-def remove_file_at_path(file_path):
-    try:
-        os.remove(file_path)
-        return True
-    except IOError:
-        print('Error: Could not clean file: %s' % file_path)
-        return False
 
 
 def write_lines_to_file_at_path(lines, file_path):
     try:
-        a_file = open(file_path, 'w')
-        for line in lines:
-            a_file.write(line)
-        a_file.close()
+        with open(file_path, 'w') as a_file:
+            for line in lines:
+                a_file.write(line)
     except IOError:
-        print('Error: Could not open to write: %s' % file_path)
+        print('Error: Could not open file to write: %s' % file_path)
 
 
 def remove_files_at_paths(file_paths):
