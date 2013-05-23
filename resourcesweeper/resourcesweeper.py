@@ -63,20 +63,23 @@ def get_resource_occurrences(sources, resources):
 
     for source in sources:
         print(source.get_path())
-        source_file = open(source.get_path(), 'r')
-        source_file_lines = source_file.readlines()
-        for line_number, source_file_line in enumerate(source_file_lines):
-            for resource in resources:
-                count = source_file_line.count('@"%s' % resource.name) + source_file_line.count('>%s' % resource.name)
-                if count > 0:
-                    resource_occurrences.append(
-                        {
-                            'count': count,
-                            'source': source,
-                            'line_number': line_number,
-                            'resource': resource
-                        })
-        source_file.close()
+        try:
+            with open(source.get_path(), 'r') as source_file:
+                for line_number, source_file_line in enumerate(source_file, start=1):
+                    for resource in resources:
+                        #TODO: change '@"%s' to something more appropriate (class usages perhaps as in IosClass)
+                        count = source_file_line.count('@"%s' % resource.name) + source_file_line.count(
+                            '>%s' % resource.name)
+                        if count > 0:
+                            resource_occurrences.append(
+                                {
+                                    'count': count,
+                                    'source': source,
+                                    'line_number': line_number,
+                                    'resource': resource
+                                })
+        except IOError:
+            print('Error: could not open ' + source.get_path())
 
     return resource_occurrences
 
