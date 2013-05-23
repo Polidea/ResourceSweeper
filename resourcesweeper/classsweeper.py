@@ -22,13 +22,14 @@ def set_dependencies(project_classes):
 
         a_class_file_paths = a_class.file_paths()
         for a_class_file_path in a_class_file_paths:
-            class_file = open(a_class_file_path, 'r')
-            class_file_lines = class_file.readlines()
-            for class_file_line in class_file_lines:
-                for a_a_class in project_classes:
-                    if line_contains_any_of_class_use_cases(class_file_line, a_a_class.use_cases):
-                        a_class.used_classes.add(a_a_class)
-            class_file.close()
+            try:
+                with open(a_class_file_path, 'r') as opened_file:
+                    for line in opened_file:
+                        for a_a_class in project_classes:
+                            if line_contains_any_of_class_use_cases(line, a_a_class.use_cases):
+                                a_class.used_classes.add(a_a_class)
+            except IOError:
+                print 'Error: Could not open ' + a_class_file_path
 
 
 def line_contains_any_of_class_use_cases(class_file_line, class_use_cases):
