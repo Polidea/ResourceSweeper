@@ -1,4 +1,5 @@
 from __future__ import print_function
+from copy import copy
 import os
 
 SPECIAL_CASE_FILE_NAME = {'main.m'}
@@ -25,40 +26,54 @@ def get_file_names(file_paths):
 
 
 def delete_lines_containing_files_in_file(file_names, pbxproj_file_path):
-    pbxproj_file = open(pbxproj_file_path, 'r')
-    lines = pbxproj_file.readlines()
-    pbxproj_file.close()
+    original_lines = get_lines_from_file_at_path(pbxproj_file_path)
 
-    file_names_with_prefix = set()
-    for file_name in file_names:
-        if not file_name in SPECIAL_CASE_FILE_NAME:
-            file_names_with_prefix.add('/* ' + file_name + ' */')
+    if original_lines and remove_file_at_path(pbxproj_file_path):
+        file_names_with_prefix_postfix = set(
+            ['/* ' + file_name + ' */' for file_name in file_names if not file_name in SPECIAL_CASE_FILE_NAME])
 
-    os.remove(pbxproj_file_path)
+        lines_to_remove = set(
+            [line for line in original_lines for file_name in file_names_with_prefix_postfix if file_name in line])
 
-    line_count_before = len(lines)
+        changed_lines = copy(original_lines)
+        for line in lines_to_remove:
+            changed_lines.remove(line)
 
-    lines_to_remove = set()
-    for line in lines:
-        for file_name in file_names_with_prefix:
-            if file_name in line:
-                lines_to_remove.add(line)
+        print('Number of all lines in project.pbxproj: ', len(original_lines))
+        print('Number of lines after removal in project.pbxproj: ', len(changed_lines))
+        print('Number of lines removed from project.pbxproj: ', len(original_lines) - len(changed_lines))
 
-    for line in lines_to_remove:
-        lines.remove(line)
+        write_lines_to_file_at_path(changed_lines, pbxproj_file_path)
 
-    line_count_after = len(lines)
 
-    print('Number of all lines in project.pbxproj: ', line_count_before)
-    print('Number of lines after removal in project.pbxproj: ', line_count_after)
-    print('Number of lines removed from project.pbxproj: ', line_count_before - line_count_after)
+def get_lines_from_file_at_path(file_path):
+    lines = []
+    try:
+        a_file = open(file_path, 'r')
+        lines = a_file.readlines()
+        a_file.close()
+    except IOError:
+        print('Error: Could not open to read: %s' % file_path)
+    return lines
 
-    pbxproj_file = open(pbxproj_file_path, 'w')
 
-    for line in lines:
-        pbxproj_file.write(line)
+def remove_file_at_path(file_path):
+    try:
+        os.remove(file_path)
+        return True
+    except IOError:
+        print('Error: Could not clean file: %s' % file_path)
+        return False
 
-    pbxproj_file.close()
+
+def write_lines_to_file_at_path(lines, file_path):
+    try:
+        a_file = open(file_path, 'w')
+        for line in lines:
+            a_file.write(line)
+        a_file.close()
+    except IOError:
+        print('Error: Could not open to write: %s' % file_path)
 
 
 def remove_files_at_paths(file_paths):
