@@ -26,10 +26,10 @@ class IosClass():
                 '@"' + name + '"')
 
     def exists_m_file(self):
-        return os.path.isfile('%s%s%s' % (self.directory, self.name, '.m'))
+        return os.path.isfile(self.directory + self.name + '.m')
 
     def exists_h_file(self):
-        return os.path.isfile('%s%s%s' % (self.directory, self.name, '.h'))
+        return os.path.isfile(self.directory + self.name + '.h')
 
     def full_path(self):
         return self.directory + self.name
@@ -37,17 +37,17 @@ class IosClass():
     def file_paths(self):
         file_paths = []
         if self.has_m_extension_file:
-            file_paths.append('%s%s%s' % (self.directory, self.name, '.m'))
+            file_paths.append(self.directory + self.name + '.m')
         if self.has_h_extension_file:
-            file_paths.append('%s%s%s' % (self.directory, self.name, '.h'))
+            file_paths.append(self.directory + self.name + '.h')
         return file_paths
 
     def get_file_names(self):
         file_names = []
         if self.has_m_extension_file:
-            file_names.append('%s%s' % (self.name, '.m'))
+            file_names.append(self.name + '.m')
         if self.has_h_extension_file:
-            file_names.append('%s%s' % (self.name, '.h'))
+            file_names.append(self.name + '.h')
         return file_names
 
     def files_count(self):
