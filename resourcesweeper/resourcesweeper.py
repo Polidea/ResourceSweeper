@@ -1,15 +1,14 @@
-from __future__ import print_function
 import os
-from resource import Resource, get_resource_name
+from resource import Resource
+from filehelper import get_all_file_paths, line_contains_any_of_strings
 from source import SOURCE_FILE_EXTENSIONS, Source
 
 RESOURCE_NAMES_NOT_REFERENCED_IN_CODE = {'Default'}
 
 
 def analyze_project_resources(project_root_path):
-    subdirectory_paths = get_subdirectory_paths(project_root_path)
-    sources = get_sources(subdirectory_paths)
-    resources = get_resources(subdirectory_paths)
+    sources = get_sources(project_root_path)
+    resources = get_resources(project_root_path)
     resource_occurrences = get_resource_occurrences(sources, resources)
     used_resources = get_used_resources(resource_occurrences)
     used_resources.update(resources_not_referenced_in_code(resources))
@@ -31,10 +30,8 @@ def get_subdirectory_paths(directory_path):
     return paths
 
 
-def get_sources(subdirectory_paths):
-    return [Source(path, source_name)
-            for path in subdirectory_paths
-            for source_name in get_file_names(path, SOURCE_FILE_EXTENSIONS)]
+def get_sources(root_path):
+    return [Source(path) for path in get_all_file_paths(root_path, SOURCE_FILE_EXTENSIONS)]
 
 
 def get_file_names(path, proper_extensions):
@@ -44,34 +41,22 @@ def get_file_names(path, proper_extensions):
             if file_name.endswith(extension)]
 
 
-def get_resources(subdirectory_paths):
-    resources = set()
-
-    for path in subdirectory_paths:
-        resource_file_names = get_file_names(path, Resource.proper_extensions)
-        resource_names = set()
-        for resource_file_name in resource_file_names:
-            resource_names.add(get_resource_name(resource_file_name))
-        for resource_name in resource_names:
-            resources.add(Resource(path, resource_name))
-
-    return resources
+def get_resources(root_path):
+    return set([Resource(path) for path in get_all_file_paths(root_path, Resource.proper_extensions)])
 
 
 def get_resource_occurrences(sources, resources):
     resource_occurrences = []
 
     for source in sources:
-        print(source.get_path())
+        print source.get_path()
         source_file = open(source.get_path(), 'r')
         source_file_lines = source_file.readlines()
         for line_number, source_file_line in enumerate(source_file_lines):
             for resource in resources:
-                count = source_file_line.count('@"%s' % resource.name) + source_file_line.count('>%s' % resource.name)
-                if count > 0:
+                if line_contains_any_of_strings(source_file_line, resource.use_cases):
                     resource_occurrences.append(
                         {
-                            'count': count,
                             'source': source,
                             'line_number': line_number,
                             'resource': resource

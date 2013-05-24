@@ -6,36 +6,47 @@ class Resource():
     retina_resolution_key = '@2x'
     four_inch_resolution_key = '-568h'
 
-    def __init__(self, directory, resource_name_with_extension):
-        self.directory = directory
+    def __init__(self, path):
+        self.directory, resource_name_with_extension = os.path.split(path)
+        resource_name_with_extension = get_resource_name(resource_name_with_extension)
         self.extension = os.path.splitext(resource_name_with_extension)[-1]
         self.name = os.path.splitext(resource_name_with_extension)[0]
         self.low_resolution = self.exists_low_resolution()
         self.retina_resolution = self.exists_retina_resolution()
         self.four_inch_resolution = self.exists_four_inch_resolution()
+        self.use_cases = self.generate_use_cases()
+        pass
 
     def exists_low_resolution(self):
-        return os.path.isfile('%s%s%s' % (self.directory, self.name, self.extension))
+        return os.path.isfile(os.path.join(self.directory, self.name + self.extension))
 
     def exists_retina_resolution(self):
-        n = '%s%s%s%s' % (self.directory, self.name, self.retina_resolution_key, self.extension)
-        name = '%s%s%s' % (self.name, self.retina_resolution_key, self.extension)
-        return os.path.isfile(os.path.join(self.directory, name))
+        return os.path.isfile(os.path.join(self.directory, self.name + self.retina_resolution_key + self.extension))
 
     def exists_four_inch_resolution(self):
-        return os.path.isfile('%s%s%s%s%s' % (
-            self.directory,
-            self.name,
-            self.four_inch_resolution_key,
-            self.retina_resolution_key,
-            self.extension
-        ))
+        return os.path.isfile(
+            os.path.join(self.directory,
+                         self.name + self.four_inch_resolution_key + self.retina_resolution_key + self.extension))
+
+    def generate_use_cases(self):
+        return ('@"' + self.name + '"',
+                '>' + self.name + '<',
+                '@"' + self.name + self.extension + '"',
+                '>' + self.name + self.extension + '<',
+                '@"' + self.name + self.retina_resolution_key + '"',
+                '>' + self.name + self.retina_resolution_key + '<',
+                '@"' + self.name + self.retina_resolution_key + self.extension + '"',
+                '>' + self.name + self.retina_resolution_key + self.extension + '<',
+                '@"' + self.name + self.four_inch_resolution_key + self.retina_resolution_key + '"',
+                '>' + self.name + self.four_inch_resolution_key + self.retina_resolution_key + '<',
+                '@"' + self.name + self.four_inch_resolution_key + self.retina_resolution_key + self.extension + '"',
+                '>' + self.name + self.four_inch_resolution_key + self.retina_resolution_key + self.extension + '<')
 
     def get_path(self):
         if self.retina_resolution:
-            return '%s%s%s%s' % (self.directory, self.name, self.retina_resolution_key, self.extension)
+            return os.path.join(self.directory, self.name + self.retina_resolution_key + self.extension)
         else:
-            return '%s%s%s' % (self.directory, self.name, self.extension)
+            return os.path.join(self.directory, self.name + self.extension)
 
     def get_file_names(self):
         file_names = []
@@ -49,13 +60,11 @@ class Resource():
         return tuple(file_names)
 
     def __str__(self):
-        return '[LR: %d, RR: %d, 4R: %d] %s%s%s ' % (
+        return '[LR: %d, RR: %d, 4R: %d] %s ' % (
             self.low_resolution,
             self.retina_resolution,
             self.four_inch_resolution,
-            self.directory,
-            self.name,
-            self.extension,
+            os.path.join(self.directory, self.name + self.extension)
         )
 
     def __unicode__(self):
@@ -68,7 +77,7 @@ class Resource():
         return self.directory == other.directory and self.name == other.name
 
     def __hash__(self):
-        return hash('%s%s' % (self.directory, self.name))
+        return hash(os.path.join(self.directory, self.name))
 
 
 def get_resource_name(file_name):

@@ -21,8 +21,8 @@ def generate_report(output_filename, project_root_path, resources, used_resource
     used_resources_size = get_size(used_resources) / 1024.0 / 1024.0
     unused_resources_size = get_size(unused_resources) / 1024.0 / 1024.0
 
-    used_resources_part = used_resources_size / all_resources_size * 100
-    unused_resources_part = unused_resources_size / all_resources_size * 100
+    used_resources_part = all_resources_size > 0 and used_resources_size / all_resources_size * 100 or 0
+    unused_resources_part = all_resources_size > 0 and unused_resources_size / all_resources_size * 100 or 0
 
     print('\nDisk usage:', file=report_file)
     print('All resources size: %f MiB [100.00%%]' % all_resources_size, file=report_file)
@@ -32,18 +32,15 @@ def generate_report(output_filename, project_root_path, resources, used_resource
     print('\nMissing low resolution files in used resources:', file=report_file)
     for resource in used_resources:
         if not resource.low_resolution:
-            print('%s%s%s' % (resource.directory.replace(project_root_path, ''),
-                              resource.name,
-                              resource.extension),
+            print(os.path.join(resource.directory.replace(project_root_path, ''),
+                               resource.name + resource.extension),
                   file=report_file)
 
     print('\nMissing retina resolution files in used resources:', file=report_file)
     for resource in used_resources:
         if not resource.retina_resolution:
-            print('%s%s%s%s' % (resource.directory.replace(project_root_path, ''),
-                                resource.name,
-                                resource.retina_resolution_key,
-                                resource.extension),
+            print(os.path.join(resource.directory.replace(project_root_path, ''),
+                               resource.name + resource.retina_resolution_key + resource.extension),
                   file=report_file)
 
     print('\n--> Saved report file: %s\n' % output_filename)
@@ -75,13 +72,10 @@ def resource_and_resource_file_number_and_total_size(resources):
 
 
 def get_size(resources):
-    size = 0
-    for resource in resources:
-        resource_file_names = resource.get_file_names()
-        for file_name in resource_file_names:
-            if os.path.isfile(resource.directory + file_name):
-                size += os.path.getsize(resource.directory + file_name)
-    return size
+    return sum([os.path.getsize(os.path.join(resource.directory, file_name))
+                for resource in resources
+                for file_name in resource.get_file_names()
+                if os.path.isfile(os.path.join(resource.directory, file_name))])
 
 
 def generate_delete_script_for_resources(output_filename, project_root_path, unused_resources):
@@ -96,7 +90,7 @@ def generate_delete_script_for_resources(output_filename, project_root_path, unu
 
     for resource in unused_resources:
         for file_name in resource.get_file_names():
-            file_string = '    \'%s%s\',' % (resource.directory, file_name)
+            file_string = '    \'%s\',' % os.path.join(resource.directory, file_name)
             print(file_string, file=delete_script_file)
     print(')', file=delete_script_file)
 
@@ -121,7 +115,7 @@ def generate_delete_script_for_classes(output_filename, project_root_path, not_r
 
     for a_class in not_referenced_classes:
         for file_name in a_class.get_file_names():
-            file_string = '    \'%s%s\',' % (a_class.directory, file_name)
+            file_string = '    \'%s\',' % os.path.join(a_class.directory, file_name)
             print(file_string, file=delete_script_file)
     print(')', file=delete_script_file)
 

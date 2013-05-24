@@ -1,5 +1,6 @@
 from iosclass import CLASS_EXTENSIONS, IosClass
 from resourcesweeper import get_subdirectory_paths, get_file_names
+from resourcesweeper.filehelper import line_contains_any_of_strings
 
 
 def analyze_project_resources(project_root_path, main_m_file_path):
@@ -26,18 +27,9 @@ def set_dependencies(project_classes):
             class_file_lines = class_file.readlines()
             for class_file_line in class_file_lines:
                 for a_a_class in project_classes:
-                    if line_contains_any_of_class_use_cases(class_file_line, a_a_class.use_cases):
+                    if line_contains_any_of_strings(class_file_line, a_a_class.use_cases):
                         a_class.used_classes.add(a_a_class)
             class_file.close()
-
-
-def line_contains_any_of_class_use_cases(class_file_line, class_use_cases):
-    line = class_file_line.lower()
-    for class_use_case in class_use_cases:
-        if class_use_case in line:
-            return True
-
-    return False
 
 
 def get_non_referenced_classes(project_classes, main_m_file_path):
