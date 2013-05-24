@@ -9,7 +9,8 @@ def generate_report(output_filename, project_root_path, resources, used_resource
 
             report_file.write('\n\nResources and files:')
             unused_resources = resources - used_resources
-            report_file.write('\nNumber of all resources: %d, files: %d' % (resource_and_resource_file_number(resources)))
+            report_file.write(
+                '\nNumber of all resources: %d, files: %d' % (resource_and_resource_file_number(resources)))
             report_file.write(
                 '\nNumber of used resources: %d, files: %d' % (resource_and_resource_file_number(used_resources)))
             report_file.write(
@@ -25,22 +26,23 @@ def generate_report(output_filename, project_root_path, resources, used_resource
             report_file.write('\n\nDisk usage:')
             report_file.write('\nAll resources size: %f MiB [100.00%%]' % all_resources_size)
             report_file.write('\nUsed resources size: %f MiB [%.2f%%]' % (used_resources_size, used_resources_part))
-            report_file.write('\nUnused resources size: %f MiB [%.2f%%]' % (unused_resources_size, unused_resources_part))
+            report_file.write(
+                '\nUnused resources size: %f MiB [%.2f%%]' % (unused_resources_size, unused_resources_part))
 
             report_file.write('\n\nMissing low resolution files in used resources:')
             for resource in used_resources:
                 if not resource.low_resolution:
                     report_file.write('\n%s%s%s' % (resource.directory.replace(project_root_path, ''),
-                                                  resource.name,
-                                                  resource.extension))
+                                                    resource.name,
+                                                    resource.extension))
 
             report_file.write('\n\nMissing retina resolution files in used resources:')
             for resource in used_resources:
                 if not resource.retina_resolution:
                     report_file.write('\n%s%s%s%s' % (resource.directory.replace(project_root_path, ''),
-                                                    resource.name,
-                                                    resource.retina_resolution_key,
-                                                    resource.extension))
+                                                      resource.name,
+                                                      resource.retina_resolution_key,
+                                                      resource.extension))
 
             print('\n--> Saved report file: %s\n' % output_filename)
 
@@ -87,7 +89,7 @@ def generate_delete_script_for_resources(output_filename, project_root_path, unu
     try:
         with open(output_filename, 'w') as delete_script_file:
 
-            delete_script_file.write('\nfrom resourcesweeper.delete import delete_files_from_disk_and_pbxproj\n')
+            delete_script_file.write('from resourcesweeper.delete import delete_files_from_disk_and_pbxproj\n')
             delete_script_file.write('\nproject_root_path = \'%s\'' % project_root_path)
             delete_script_file.write('\nfiles_to_delete = (')
 
@@ -113,7 +115,7 @@ def generate_delete_script_for_classes(output_filename, project_root_path, not_r
     try:
         with open(output_filename, 'w') as delete_script_file:
 
-            delete_script_file.write('\nfrom resourcesweeper.delete import delete_files_from_disk_and_pbxproj\n')
+            delete_script_file.write('from resourcesweeper.delete import delete_files_from_disk_and_pbxproj\n')
             delete_script_file.write('\nproject_root_path = \'%s\'' % project_root_path)
             delete_script_file.write('\nfiles_to_delete = (')
 

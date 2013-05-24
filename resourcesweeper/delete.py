@@ -71,7 +71,11 @@ def remove_files_at_paths(file_paths):
     for file_path in file_paths:
         if os.path.isfile(file_path):
             size += os.path.getsize(file_path)
-            os.remove(file_path)
-            removed_files_count += 1
+            try:
+                os.remove(file_path)
+                removed_files_count += 1
+            except IOError:
+                print('Error: Could not delete file at path: %s' % file_path)
+                size -= os.path.getsize(file_path)
     print('Removed %d files with total size: %f MiB' % (removed_files_count, size / 1024.0 / 1024.0))
 
