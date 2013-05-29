@@ -2,7 +2,7 @@ import os
 
 
 class Resource():
-    proper_extensions = ['.png', '.jpg']
+    EXTENSIONS = ('.png', '.jpg')
     retina_resolution_key = '@2x'
     four_inch_resolution_key = '-568h'
 

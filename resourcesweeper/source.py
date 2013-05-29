@@ -1,9 +1,9 @@
 import os
 
-SOURCE_FILE_EXTENSIONS = ['.m', '.plist', '.xib']
-
 
 class Source():
+    EXTENSIONS = ('.m', '.plist', '.xib')
+
     def __init__(self, path):
         self.directory, self.name = os.path.split(path)
         pass
