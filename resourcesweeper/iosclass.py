@@ -15,6 +15,7 @@ class IosClass():
     def generate_use_cases(self):
         name = self.name.lower()
         return ('#import "' + name + '.h"',
+                '/' + name + '.h',
                 '@class ' + name + ';',
                 '@protocol ' + name + ';',
                 ' : ' + name + ' ',
