@@ -72,10 +72,10 @@ def resource_and_resource_file_number_and_total_size(resources):
 
 
 def get_size(resources):
-    return sum([os.path.getsize(os.path.join(resource.directory, file_name))
+    return sum([os.path.getsize(file_path)
                 for resource in resources
-                for file_name in resource.get_file_names()
-                if os.path.isfile(os.path.join(resource.directory, file_name))])
+                for file_path in resource.get_file_paths()
+                if os.path.isfile(file_path)])
 
 
 def generate_delete_script_for_resources(output_filename, project_root_path, unused_resources):
@@ -89,8 +89,8 @@ def generate_delete_script_for_resources(output_filename, project_root_path, unu
     print('files_to_delete = (', file=delete_script_file)
 
     for resource in unused_resources:
-        for file_name in resource.get_file_names():
-            file_string = '    \'%s\',' % os.path.join(resource.directory, file_name)
+        for file_path in resource.get_file_paths():
+            file_string = '    \'%s\',' % file_path
             print(file_string, file=delete_script_file)
     print(')', file=delete_script_file)
 

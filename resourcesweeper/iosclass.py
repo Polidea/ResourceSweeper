@@ -8,11 +8,11 @@ class IosClass():
         self.directory, class_name_with_extension = os.path.split(path)
         self.name = os.path.splitext(class_name_with_extension)[0]
         self.used_classes = set()
-        self.use_cases = self.generate_use_cases()
-        self.has_m_extension_file = self.exists_m_file()
-        self.has_h_extension_file = self.exists_h_file()
+        self.use_cases = self.__generate_use_cases()
+        self.has_m_extension_file = self.__exists_m_file()
+        self.has_h_extension_file = self.__exists_h_file()
 
-    def generate_use_cases(self):
+    def __generate_use_cases(self):
         name = self.name.lower()
         return ('#import "' + name + '.h"',
                 '@class ' + name + ';',
@@ -25,22 +25,14 @@ class IosClass():
                 '    ' + name + ' *',
                 '@"' + name + '"')
 
-    def exists_m_file(self):
+    def __exists_m_file(self):
         return os.path.isfile(os.path.join(self.directory, self.name + '.m'))
 
-    def exists_h_file(self):
+    def __exists_h_file(self):
         return os.path.isfile(os.path.join(self.directory, self.name + '.h'))
 
-    def full_path(self):
-        return os.path.join(self.directory, self.name)
-
-    def file_paths(self):
-        file_paths = []
-        if self.has_m_extension_file:
-            file_paths.append(os.path.join(self.directory, self.name + '.m'))
-        if self.has_h_extension_file:
-            file_paths.append(os.path.join(self.directory, self.name + '.h'))
-        return file_paths
+    def get_file_paths(self):
+        return [os.path.join(self.directory, file_name) for file_name in self.get_file_names()]
 
     def get_file_names(self):
         file_names = []
@@ -59,6 +51,9 @@ class IosClass():
         return a
 
     def __str__(self):
+        return self.__get_path()
+
+    def __get_path(self):
         return os.path.join(self.directory, self.name)
 
     def __unicode__(self):
@@ -71,4 +66,4 @@ class IosClass():
         return self.directory == other.directory and self.name == other.name
 
     def __hash__(self):
-        return hash(os.path.join(self.directory, self.name))
+        return hash(self.__get_path())

@@ -19,7 +19,7 @@ def set_dependencies(project_classes):
     for a_class in project_classes:
         print(a_class)
 
-        a_class_file_paths = a_class.file_paths()
+        a_class_file_paths = a_class.get_file_paths()
         for a_class_file_path in a_class_file_paths:
             class_file = open(a_class_file_path, 'r')
             class_file_lines = class_file.readlines()
