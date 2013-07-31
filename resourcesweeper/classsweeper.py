@@ -33,7 +33,7 @@ def set_dependencies(project_classes):
 def get_non_referenced_classes(project_classes, main_m_file_path):
     not_referenced_classes = project_classes.copy()
     for main_class in not_referenced_classes:
-        if os.path.join(main_class.directory, '') == os.path.join(main_m_file_path, '') and main_class.name == 'main':
+        if os.path.samefile(main_class.directory, main_m_file_path) and main_class.name == 'main':
             remove_used_classes(main_class, not_referenced_classes)
             break
 
