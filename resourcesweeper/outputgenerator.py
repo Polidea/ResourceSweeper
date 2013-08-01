@@ -29,20 +29,17 @@ def generate_report(output_filename, project_root_path, resources, used_resource
             report_file.write(
                 '\nUnused resources size: %f MiB [%.2f%%]' % (unused_resources_size, unused_resources_part))
 
-            report_file.write('\n\nMissing low resolution files in used resources:')
+            report_file.write('\n\nMissing low resolution files in used resources:\n')
             for resource in used_resources:
                 if not resource.low_resolution:
-                    report_file.write('\n%s%s%s' % (resource.directory.replace(project_root_path, ''),
-                                                    resource.name,
-                                                    resource.extension))
+                    report_file.write(os.path.join(resource.directory.replace(project_root_path, ''),
+                               resource.name + resource.extension) + '\n')
 
-            report_file.write('\n\nMissing retina resolution files in used resources:')
+            report_file.write('\n\nMissing retina resolution files in used resources:\n')
             for resource in used_resources:
                 if not resource.retina_resolution:
-                    report_file.write('\n%s%s%s%s' % (resource.directory.replace(project_root_path, ''),
-                                                      resource.name,
-                                                      resource.retina_resolution_key,
-                                                      resource.extension))
+                    report_file.write(os.path.join(resource.directory.replace(project_root_path, ''),
+                               resource.name + resource.retina_resolution_key + resource.extension) + '\n')
 
             print('\n--> Saved report file: %s\n' % output_filename)
 
@@ -76,13 +73,10 @@ def resource_and_resource_file_number_and_total_size(resources):
 
 
 def get_size(resources):
-    size = 0
-    for resource in resources:
-        resource_file_names = resource.get_file_names()
-        for file_name in resource_file_names:
-            if os.path.isfile(resource.directory + file_name):
-                size += os.path.getsize(resource.directory + file_name)
-    return size
+    return sum([os.path.getsize(file_path)
+                for resource in resources
+                for file_path in resource.get_file_paths()
+                if os.path.isfile(file_path)])
 
 
 def generate_delete_script_for_resources(output_filename, project_root_path, unused_resources):
@@ -121,7 +115,7 @@ def generate_delete_script_for_classes(output_filename, project_root_path, not_r
 
             for a_class in not_referenced_classes:
                 for file_name in a_class.get_file_names():
-                    file_string = '\n    \'%s%s\',' % (a_class.directory, file_name)
+                    file_string = '\n    \'%s\',' % os.path.join(a_class.directory, file_name)
                     delete_script_file.write(file_string)
             delete_script_file.write('\n)')
 

@@ -13,7 +13,8 @@ def main(arguments):
             project_root_path += '/'
 
         resources, used_resources = analyze_project_resources(project_root_path=project_root_path)
-        unused_resources = resources - used_resources
+        unused_resources = list(resources - used_resources)
+        unused_resources.sort()
 
         print('\nBrief report:')
         print('All resources: %d, files: %d, total size: %.2f MiB' % (
