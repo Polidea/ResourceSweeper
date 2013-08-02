@@ -1,0 +1,25 @@
+from resourcesweeper.delete import delete_files_from_disk_and_pbxproj
+
+project_root_path = '/Users/dariuszseweryn/Projects/ResourceSweeper/tests/test_project/iPokeMon-dev/'
+files_to_delete = (
+/ResourceSweeper/tests/test_project/iPokeMon-dev/Master/Constants.m',
+/ResourceSweeper/tests/test_project/iPokeMon-dev/Master/Constants.h',
+/ResourceSweeper/tests/test_project/iPokeMon-dev/Master/Controllers/FeedbackViewController.m',
+/ResourceSweeper/tests/test_project/iPokeMon-dev/Master/Controllers/FeedbackViewController.h',
+/ResourceSweeper/tests/test_project/iPokeMon-dev/Master/DataDecoder.m',
+/ResourceSweeper/tests/test_project/iPokeMon-dev/Master/DataDecoder.h',
+/ResourceSweeper/tests/test_project/iPokeMon-dev/Master/GameControllers/GameConfig.h',
+/ResourceSweeper/tests/test_project/iPokeMon-dev/Master/GameControllers/GameMenuSixPokemonsUnitViewController.m',
+/ResourceSweeper/tests/test_project/iPokeMon-dev/Master/GameControllers/GameMenuSixPokemonsUnitViewController.h',
+/ResourceSweeper/tests/test_project/iPokeMon-dev/Master/GameModels/GameMoveEffectViewController.m',
+/ResourceSweeper/tests/test_project/iPokeMon-dev/Master/GameModels/GameMoveEffectViewController.h',
+/ResourceSweeper/tests/test_project/iPokeMon-dev/Master/Libs/KYiOSFoundation/KYConstants.m',
+/ResourceSweeper/tests/test_project/iPokeMon-dev/Master/Libs/KYiOSFoundation/KYConstants.h',
+/ResourceSweeper/tests/test_project/iPokeMon-dev/Master/Models/Ability.m',
+/ResourceSweeper/tests/test_project/iPokeMon-dev/Master/Models/Ability.h',
+/ResourceSweeper/tests/test_project/iPokeMon-dev/Master/Models/DataTransformer.m',
+/ResourceSweeper/tests/test_project/iPokeMon-dev/Master/Models/DataTransformer.h',
+/ResourceSweeper/tests/test_project/iPokeMon-dev/MasterTests/MasterTests.m',
+/ResourceSweeper/tests/test_project/iPokeMon-dev/MasterTests/MasterTests.h',
+)
+delete_files_from_disk_and_pbxproj(files_to_delete, project_root_path)

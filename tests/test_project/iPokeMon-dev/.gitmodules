@@ -1,0 +1,27 @@
+[submodule "Master/Libs/KYCircleMenu"]
+	path = Master/Libs/KYCircleMenu
+	url = git://github.com/Kjuly/KYCircleMenu.git
+[submodule "Master/Libs/JSONKit"]
+	path = Master/Libs/JSONKit
+	url = git://github.com/Kjuly/JSONKit.git
+[submodule "Master/Libs/AFNetworking"]
+	path = Master/Libs/AFNetworking
+	url = git://github.com/Kjuly/AFNetworking.git
+[submodule "Master/Libs/MBProgressHUD"]
+	path = Master/Libs/MBProgressHUD
+	url = git://github.com/Kjuly/MBProgressHUD.git
+[submodule "Master/Libs/Cocos2D-iPhone"]
+	path = Master/Libs/Cocos2D-iPhone
+	url = git://github.com/Kjuly/cocos2d-iphone.git
+[submodule "Master/Libs/GTMOAuth2"]
+	path = Master/Libs/GTMOAuth2
+	url = git://github.com/Kjuly/GTMOAuth2.git
+[submodule "Master/Libs/KYArcTab"]
+	path = Master/Libs/KYArcTab
+	url = git@github.com:Kjuly/KYArcTab.git
+[submodule "Master/Libs/SSZipArchive"]
+	path = Master/Libs/SSZipArchive
+	url = git@github.com:Kjuly/ssziparchive.git
+[submodule "Master/Libs/KYUnlockCodeManager"]
+	path = Master/Libs/KYUnlockCodeManager
+	url = git@github.com:Kjuly/KYUnlockCodeManager.git
