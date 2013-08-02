@@ -75,6 +75,9 @@ class Resource():
     def __hash__(self):
         return hash(os.path.join(self.directory, self.name))
 
+    def __cmp__(self, other):
+        return cmp(str(self), str(other))
+
 
 def get_resource_name(file_name):
     name = os.path.splitext(file_name)[0]

@@ -68,3 +68,6 @@ class IosClass():
 
     def __hash__(self):
         return hash(self.__get_path())
+
+    def __cmp__(self, other):
+        return cmp(str(self), str(other))

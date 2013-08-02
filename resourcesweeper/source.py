@@ -2,7 +2,7 @@ import os
 
 
 class Source():
-    EXTENSIONS = ('.m', '.plist', '.xib')
+    EXTENSIONS = ('.h', '.m', '.plist', '.xib')
 
     def __init__(self, path):
         self.directory, self.name = os.path.split(path)

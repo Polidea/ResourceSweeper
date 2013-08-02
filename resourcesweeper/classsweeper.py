@@ -39,7 +39,7 @@ def get_non_referenced_classes(project_classes, main_m_file_path):
             break
 
     sorted_not_referenced_classes = list(not_referenced_classes)
-    sorted_not_referenced_classes.sort(key=lambda k: str(k))
+    sorted_not_referenced_classes.sort()
 
     return sorted_not_referenced_classes
 
